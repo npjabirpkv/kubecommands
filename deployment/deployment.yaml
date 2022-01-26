@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: httpd-frontend
+ labels:
+  type: front-end
+  env: uat
+spec:
+   template:
+    metadata: 
+     name: httpd:2.4-alpine
+     labels:
+      app: web
+      type: uat
+    spec:
+     containers:
+      - name: web-uat
+        image: httpd:2.4-alpine
+   replicas: 3
+   selector: 
+    matchLabels: 
+     app: web
+     type: uat

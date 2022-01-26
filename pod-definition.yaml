@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+ name: web-app
+ labels:
+  type: uat
+  jabir: ok
+spec:
+ containers:
+  - name:nginix
+    image:nginx

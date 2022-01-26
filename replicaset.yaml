@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+ name: rc-replicaset
+ labels:
+  type: front-end
+  env: uat
+spec:
+   template:
+    metadata: 
+     name: nginx
+     labels:
+      app: web
+      type: uat
+    spec:
+     containers:
+      - name: web-uat
+        image: nginx
+   replicas: 3
+   selector: 
+    matchLabels: 
+     app: web
+     type: uat
