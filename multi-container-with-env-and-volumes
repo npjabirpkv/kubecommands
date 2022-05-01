@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: multi-container-playground
+  name: multi-container-playground
+spec:
+  containers:
+  - image: nginx:1.17.6-alpine
+    name: c1
+    env:
+    - name: MY_NODE_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: spec.nodeName
+    volumeMounts:
+    - name: vol
+      mountPath: /vol
+  - image: busybox:1.31.1
+    name: c2
+    command: ["sh", "-c", "while true; do date >> /vol/date.log; sleep 1; done"]
+    volumeMounts:
+    - name: vol
+      mountPath: /vol
+  - image: busybox:1.31.1
+    name: c3
+    volumeMounts:
+    - name: vol
+      mountPath: /vol
+    command: ["sh", "-c", "tail -f /vol/date.log"]
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+  volumes:                                                                        # add
+    - name: vol                                                                   # add
+      emptyDir: {}                                                                # add
+status: {}
